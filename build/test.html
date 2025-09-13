@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Backend Connection Test</h1>
+
+    <div class="test-section">
+        <h2>Test Database Connection</h2>
+        <button onclick="testDatabase()">Test Database</button>
+        <div id="db-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Password Verification</h2>
+        <button onclick="testPassword()">Test Password</button>
+        <div id="password-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Login</h2>
+        <form onsubmit="testLogin(event)">
+            <input type="email" id="email" placeholder="Email" value="admin@example.com" required>
+            <input type="password" id="password" placeholder="Password" value="password" required>
+            <button type="submit">Test Login</button>
+        </form>
+        <div id="login-result"></div>
+    </div>
+
+    <script>
+        async function testDatabase() {
+            const resultDiv = document.getElementById('db-result');
+            try {
+                const response = await fetch('http://localhost:8000/api/auth.php?action=test');
+                const data = await response.json();
+                resultDiv.innerHTML = '<div class="success">✅ Success!</div><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error">❌ Error: ' + error.message + '</div>';
+            }
+        }
+
+        async function testPassword() {
+            const resultDiv = document.getElementById('password-result');
+            try {
+                const response = await fetch('http://localhost:8000/api/auth.php?action=debug&email=admin@example.com&password=password');
+                const data = await response.json();
+                resultDiv.innerHTML = '<div class="success">✅ Success!</div><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error">❌ Error: ' + error.message + '</div>';
+            }
+        }
+
+        async function testLogin(event) {
+            event.preventDefault();
+            const resultDiv = document.getElementById('login-result');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:8000/api/auth.php?action=login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                resultDiv.innerHTML = '<div class="success">✅ Success!</div><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<div class="error">❌ Error: ' + error.message + '</div>';
+            }
+        }
+
+        // Auto-run database test on page load
+        window.onload = function() {
+            testDatabase();
+        };
+    </script>
+</body>
+</html>
