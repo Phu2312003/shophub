@@ -1,0 +1,8 @@
+{
+  "name": "phu2312003/shophub-backend",
+  "description": "Backend for shophub",
+  "type": "project",
+  "require": {
+    "php": ">=7.4"
+  }
+}
