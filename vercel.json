@@ -12,7 +12,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://your-backend-domain.com/api/$1"
+      "dest": "https://shop-backend-3shgoid43-ducphus-projects.vercel.app/api/$1"
     },
     {
       "src": "/(.*)",
@@ -20,6 +20,6 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://your-backend-domain.com"
+    "REACT_APP_API_URL": "https://shop-backend-3shgoid43-ducphus-projects.vercel.app"
   }
 }
