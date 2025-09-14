@@ -7,10 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-$host = 'localhost';
-$dbname = 'shop_db';
-$username = 'root';
-$password = '';
+$host = getenv('MYSQLHOST') ?: getenv('DB_HOST') ?: 'localhost';
+$dbname = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'shop_db';
+$username = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
